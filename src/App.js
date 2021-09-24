@@ -1,24 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import { DragDropContext } from "react-beautiful-dnd";
+import mockData from "data/mockData";
+import ColumnWrapper from "components/ColumnWrapper";
 
 function App() {
+  const [data, setData] = useState(mockData);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ColumnWrapper>
+      <DragDropContext>
+        {data.columnsOrdered.map((columnId) => {
+          const column = data.colums[columnId];
+          const items = column.items.map((itemId) => {
+            return data.items[itemId];
+          });
+          return <Column key={columnId} items={items} column={column}></Column>;
+        })}
+      </DragDropContext>
+    </ColumnWrapper>
   );
 }
 
