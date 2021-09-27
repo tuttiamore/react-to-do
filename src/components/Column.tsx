@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import ItemCard from "components/ItemCard";
+import ItemListInner from "components/ItemListInner";
 
 type props = {
   items: {
@@ -43,22 +44,14 @@ export default function Column({ items, column, index }: props) {
             isDragging={snapshot.isDragging}
           >
             <Title {...provided.dragHandleProps}>List {column.id}</Title>
-            <Droppable droppableId={column.id}>
+            <Droppable droppableId={column.id} type="item">
               {(provided: any) => (
                 <ItemList
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                   isDraggingOver={snapshot.isDraggingOver}
                 >
-                  {items.map((item, index) => {
-                    return (
-                      <ItemCard
-                        key={item.id}
-                        item={item}
-                        index={index}
-                      ></ItemCard>
-                    );
-                  })}
+                  <ItemListInner items={items} />
                   {provided.placeholder}
                 </ItemList>
               )}
