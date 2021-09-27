@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import "./App.css";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
+import { nanoid } from "nanoid";
 
 import mockData from "data/mockData";
 // import ColumnWrapper from "components/ColumnWrapper";
@@ -17,6 +18,26 @@ const ColumnContainer = styled.div`
 
 function App() {
   const [data, setData] = useState(mockData);
+
+  const handleAddItem = (columnId) => {
+    const newItem = { id: nanoid(), text: "new item", checked: false };
+
+    // add item to full item list
+    const newItemList = { ...data.items, [newItem.id]: newItem };
+
+    // update column list
+    const oldColumn = data.columns[columnId];
+    const newColumn = { ...oldColumn, items: [...oldColumn.items, newItem.id] };
+
+    setData({
+      ...data,
+      items: newItemList,
+      columns: {
+        ...data.columns,
+        [oldColumn.id]: newColumn,
+      },
+    });
+  };
 
   const onDragEnd = useCallback(
     (result) => {
@@ -107,6 +128,7 @@ function App() {
                   index={index}
                   items={items}
                   column={column}
+                  handleAddItem={handleAddItem}
                 ></Column>
               );
             })}

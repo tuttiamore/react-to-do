@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { Droppable, Draggable } from "react-beautiful-dnd";
-import ItemCard from "components/ItemCard";
 import ItemListInner from "components/ItemListInner";
+import AddItemButton from "components/AddItemButton";
 
 type props = {
   items: {
@@ -15,6 +15,7 @@ type props = {
     items: string[];
   };
   index: number;
+  handleAddItem: (columnId: string) => void;
 };
 
 const Container = styled.div`
@@ -33,7 +34,7 @@ const ItemList = styled.div`
   padding: 1rem;
 `;
 
-export default function Column({ items, column, index }: props) {
+export default function Column({ items, column, index, handleAddItem }: props) {
   return (
     <Draggable draggableId={column.id} index={index}>
       {(provided: any, snapshot: any) => {
@@ -56,6 +57,7 @@ export default function Column({ items, column, index }: props) {
                 </ItemList>
               )}
             </Droppable>
+            <AddItemButton columnId={column.id} handleAddItem={handleAddItem} />
           </Container>
         );
       }}
