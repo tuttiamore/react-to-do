@@ -9,6 +9,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: stretch;
   background: lightblue;
 `;
 
