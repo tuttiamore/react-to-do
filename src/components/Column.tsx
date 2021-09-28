@@ -16,13 +16,15 @@ type props = {
   };
   index: number;
   handleAddItem: (columnId: string) => void;
+  handleDeleteItem: (columnId: string, itemId: string) => void;
+  handleEditItem: (e: any, columnId: string, itemId: string) => void;
 };
 
 const Container = styled.div`
   margin: 1rem;
   padding: 1rem;
   border-radius: 5px;
-  background-color: lightgrey;
+  background-color: gainsboro;
   flex: 1;
 `;
 
@@ -34,7 +36,14 @@ const ItemList = styled.div`
   padding: 1rem;
 `;
 
-export default function Column({ items, column, index, handleAddItem }: props) {
+export default function Column({
+  items,
+  column,
+  index,
+  handleAddItem,
+  handleDeleteItem,
+  handleEditItem,
+}: props) {
   return (
     <Draggable draggableId={column.id} index={index}>
       {(provided: any, snapshot: any) => {
@@ -52,7 +61,12 @@ export default function Column({ items, column, index, handleAddItem }: props) {
                   {...provided.droppableProps}
                   isDraggingOver={snapshot.isDraggingOver}
                 >
-                  <ItemListInner items={items} />
+                  <ItemListInner
+                    columnId={column.id}
+                    items={items}
+                    handleDeleteItem={handleDeleteItem}
+                    handleEditItem={handleEditItem}
+                  />
                   {provided.placeholder}
                 </ItemList>
               )}

@@ -7,15 +7,30 @@ type props = {
     text: string;
     checked: boolean;
   }[];
+  columnId: string;
+  handleDeleteItem: (columnId: string, itemId: string) => void;
+  handleEditItem: (e: any, columnId: string, itemId: string) => void;
 };
 
-const ItemListInner = ({ items }: props) => {
-  const itemsMemo = useMemo(() => items, [items]);
-
+const ItemListInner = ({
+  items,
+  columnId,
+  handleDeleteItem,
+  handleEditItem,
+}: props) => {
   return (
     <>
-      {itemsMemo.map((item, index) => {
-        return <ItemCard key={item.id} item={item} index={index}></ItemCard>;
+      {items.map((item, index) => {
+        return (
+          <ItemCard
+            key={item.id}
+            item={item}
+            index={index}
+            columnId={columnId}
+            handleDeleteItem={handleDeleteItem}
+            handleEditItem={handleEditItem}
+          ></ItemCard>
+        );
       })}
     </>
   );
@@ -28,4 +43,5 @@ const areEqual = (prevProps: any, nextProps: any) => {
   return false;
 };
 
-export default React.memo(ItemListInner, areEqual);
+// export default React.memo(ItemListInner, areEqual);
+export default ItemListInner;
