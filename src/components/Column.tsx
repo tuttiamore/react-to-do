@@ -23,8 +23,9 @@ type props = {
 const Container = styled.div`
   margin: 1rem;
   padding: 1rem;
-  border-radius: 5px;
-  background-color: gainsboro;
+  // border-radius: 5px;
+  // border: 1px solid black;
+  background-color: white;
   flex: 1;
 `;
 

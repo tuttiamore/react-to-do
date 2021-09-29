@@ -1,19 +1,26 @@
 import { useState } from "react";
 import "./App.css";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
+
 import { nanoid } from "nanoid";
 
 import mockData from "data/mockData";
-// import ColumnWrapper from "components/ColumnWrapper";
 import Column from "components/Column";
 
+const GlobalStyle = createGlobalStyle`
+body {
+  background: rgb(162,210,255);
+  background: radial-gradient(circle at top right, rgba(162,210,255,1) 0%, rgba(205,180,219,1) 29%, rgba(255,175,204,1) 100%)
+}`;
+
 const ColumnContainer = styled.div`
+  margin: 1rem;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: stretch;
-  background: lightblue;
+  background: rgba(0, 0, 0, 10%);
 `;
 
 function App() {
@@ -153,36 +160,42 @@ function App() {
   };
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable
-        droppableId={"listDropArea"}
-        direction="horizontal"
-        type="column"
-      >
-        {(provided) => (
-          <ColumnContainer {...provided.droppableProps} ref={provided.innerRef}>
-            {data.columnsOrdered.map((columnId, index) => {
-              const column = data.columns[columnId];
-              const items = column.items.map((itemId) => {
-                return data.items[itemId];
-              });
-              return (
-                <Column
-                  key={columnId}
-                  index={index}
-                  items={items}
-                  column={column}
-                  handleAddItem={handleAddItem}
-                  handleDeleteItem={handleDeleteItem}
-                  handleEditItem={handleEditItem}
-                ></Column>
-              );
-            })}
-            {provided.placeholder}
-          </ColumnContainer>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <>
+      <GlobalStyle />
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable
+          droppableId={"listDropArea"}
+          direction="horizontal"
+          type="column"
+        >
+          {(provided) => (
+            <ColumnContainer
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+            >
+              {data.columnsOrdered.map((columnId, index) => {
+                const column = data.columns[columnId];
+                const items = column.items.map((itemId) => {
+                  return data.items[itemId];
+                });
+                return (
+                  <Column
+                    key={columnId}
+                    index={index}
+                    items={items}
+                    column={column}
+                    handleAddItem={handleAddItem}
+                    handleDeleteItem={handleDeleteItem}
+                    handleEditItem={handleEditItem}
+                  ></Column>
+                );
+              })}
+              {provided.placeholder}
+            </ColumnContainer>
+          )}
+        </Droppable>
+      </DragDropContext>
+    </>
   );
 }
 
